@@ -36,7 +36,7 @@ const Header = () => {
           <NavLink to="/" className="flex items-center">
             <img 
               src={isScrolled 
-                ? "/public/assests/images/logo.png" 
+                ? "/public/assests/images/logo.png"
                 : "/public/assests/images/logo_white.png"
               }
               alt="Triloki Logistics" 
