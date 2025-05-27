@@ -1,6 +1,5 @@
 import { NavLink } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock, Truck, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
-import Logo from '../common/Logo';
 
 const Footer = () => {
   return (
@@ -9,7 +8,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <Logo variant="white" size="medium" />
+            <img 
+              src="/assets/images/logo_white.png" 
+              alt="Triloki Logistics" 
+              className="h-12 w-auto mb-4"
+            />
             <p className="mt-4 text-gray-400 text-sm">
               India's premier transport & logistics company providing seamless solutions between India and UAE.
             </p>
