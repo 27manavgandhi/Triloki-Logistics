@@ -11,7 +11,7 @@ const Footer = () => {
             <img 
               src="/assets/images/logo_white.png"
               alt="Triloki Logistics" 
-              className="h-12 w-auto mb-4"
+              className="h-18 w-auto mb-4"
             />
             <p className="mt-4 text-gray-400 text-sm">
               India's premier transport & logistics company providing seamless solutions between India and UAE.
