@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img 
-              src="/assets/images/logo_white.png" 
+              src="/assets/images/logo_white.png"
               alt="Triloki Logistics" 
               className="h-12 w-auto mb-4"
             />
