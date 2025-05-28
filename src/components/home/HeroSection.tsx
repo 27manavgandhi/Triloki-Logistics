@@ -34,7 +34,7 @@ const HeroSection = () => {
   return (
     <section 
       ref={ref} 
-      className="relative h-screen min-h-[600px] max-h-[800px] overflow-hidden"
+      className="relative h-screen min-h-[600px] max-h-[800px] overflow-hidden pt-20 md:pt-24"
     >
       {/* Animated Background */}
       <div className="absolute inset-0 z-10 bg-gradient-to-r from-blue-900/80 to-black/70"></div>
