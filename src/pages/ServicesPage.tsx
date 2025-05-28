@@ -179,8 +179,8 @@ const ServicesPage = () => {
 
   return (
     <div>
-      {/* Hero Banner */}
-      <section className="relative py-20 bg-blue-600">
+      {/* Hero Banner - Added pt-20 to account for fixed header */}
+      <section className="relative py-20 pt-32 bg-blue-600">
         <div 
           className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{ backgroundImage: 'url(https://images.pexels.com/photos/1427541/pexels-photo-1427541.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)' }}
