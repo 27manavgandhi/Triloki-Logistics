@@ -367,9 +367,18 @@ const ContactPage = () => {
           </div>
 
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* This would typically be a Google Maps iframe, but for this example, we'll use a placeholder */}
-            <div className="aspect-video bg-gray-200 flex items-center justify-center">
-              <p className="text-gray-500">Google Maps would be embedded here</p>
+            {/* Google Maps Embedded */}
+            <div className="aspect-video">
+              <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27971.54227518745!2d77.04047782542307!3d28.795876036825444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390da9d43412ab49%3A0x88a3fe20a5862ae4!2sDSIIDC%20Industrial%20Area%2C%20Sector%201%2C%20Bawana%2C%20Delhi%2C%20110039!5e0!3m2!1sen!2sin!4v1748418275308!5m2!1sen!2sin" 
+                width="100%" 
+                height="100%" 
+                style={{ border: 0 }} 
+                allowFullScreen 
+                loading="lazy" 
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Triloki Logistics Location Map"
+              />
             </div>
             <div className="p-6">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between">
@@ -379,7 +388,7 @@ const ContactPage = () => {
                 </div>
                 <div className="flex space-x-4">
                   <a 
-                    href="https://maps.google.com" 
+                    href="https://www.google.com/maps/dir//DSIDC+Industrial+Area,+Sector+1,+Bawana,+Delhi,+110039/@28.7958760,77.0404778,16z/data=!4m8!4m7!1m0!1m5!1m1!1s0x390da9d43412ab49:0x88a3fe20a5862ae4!2m2!1d77.0404778!2d28.7958760"
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition-colors"
