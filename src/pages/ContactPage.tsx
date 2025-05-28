@@ -44,6 +44,7 @@ const ContactPage = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -58,6 +59,11 @@ const ContactPage = () => {
         ...errors,
         [name]: undefined,
       });
+    }
+
+    // Clear submit error when user makes changes
+    if (submitError) {
+      setSubmitError('');
     }
   };
 
@@ -86,33 +92,88 @@ const ContactPage = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
-    
+
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      console.log('Form submitted:', formData);
-      setIsSubmitting(false);
-      setIsSubmitted(true);
+    setSubmitError('');
+
+    try {
+      // First attempt: Try with JSON (proper CORS)
+      console.log("Attempting to submit form data:", formData);
       
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          subject: '',
-          message: '',
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwF0S6RwpTxXiXuh7s_8ghrxoOruhDprtZCR6OgRJKqK9qOPkWJYtS2thFRK_aGupzi/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log("Response status:", response.status);
+      console.log("Response ok:", response.ok);
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Response data:", result);
+        
+        if (result.result === "success") {
+          setIsSubmitted(true);
+          console.log("Form data sent to Google Sheet successfully:", formData);
+        } else {
+          throw new Error(result.message || "Failed to send message");
+        }
+      } else {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+    } catch (error) {
+      console.error("Primary request failed:", error);
+      
+      // Fallback attempt: Try with FormData and no-cors
+      try {
+        console.log("Attempting fallback with FormData...");
+        
+        const formDataToSend = new FormData();
+        Object.entries(formData).forEach(([key, value]) => {
+          formDataToSend.append(key, value);
         });
-        setIsSubmitted(false);
-      }, 3000);
-    }, 1500);
+
+        await fetch("https://script.google.com/macros/s/AKfycbwF0S6RwpTxXiXuh7s_8ghrxoOruhDprtZCR6OgRJKqK9qOPkWJYtS2thFRK_aGupzi/exec", {
+          method: "POST",
+          mode: 'no-cors',
+          body: formDataToSend,
+        });
+
+        // With no-cors, we assume success if no error is thrown
+        console.log("Fallback request completed - assuming success");
+        setIsSubmitted(true);
+
+      } catch (fallbackError) {
+        console.error("Fallback request also failed:", fallbackError);
+        setSubmitError("Unable to send message. Please contact us directly via phone or email.");
+      }
+    } finally {
+      setIsSubmitting(false);
+      
+      // Reset form after successful submission
+      if (isSubmitted || !submitError) {
+        setTimeout(() => {
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            subject: '',
+            message: '',
+          });
+          setIsSubmitted(false);
+        }, 3000);
+      }
+    }
   };
 
   useEffect(() => {
@@ -211,6 +272,18 @@ const ContactPage = () => {
                 style={{ transitionDelay: '200ms' }}
               >
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6">Send Us a Message</h2>
+
+                {submitError && (
+                  <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex">
+                      <AlertTriangle className="h-5 w-5 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
+                      <div>
+                        <h3 className="text-sm font-medium text-red-800">Submission Error</h3>
+                        <p className="text-sm text-red-700 mt-1">{submitError}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {isSubmitted ? (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
@@ -367,7 +440,6 @@ const ContactPage = () => {
           </div>
 
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-            {/* Google Maps Embedded */}
             <div className="aspect-video">
               <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27971.54227518745!2d77.04047782542307!3d28.795876036825444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390da9d43412ab49%3A0x88a3fe20a5862ae4!2sDSIIDC%20Industrial%20Area%2C%20Sector%201%2C%20Bawana%2C%20Delhi%2C%20110039!5e0!3m2!1sen!2sin!4v1748418275308!5m2!1sen!2sin" 
