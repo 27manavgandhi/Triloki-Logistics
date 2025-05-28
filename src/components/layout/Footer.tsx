@@ -11,7 +11,7 @@ const Footer = () => {
             <img 
               src="/assets/images/logo_white.png"
               alt="Triloki Logistics" 
-              className="h-[60px] w-auto mb-4"
+              className="h-[100px] w-auto mb-4"
 
             />
             <p className="mt-4 text-gray-400 text-sm">
