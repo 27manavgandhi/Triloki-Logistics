@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { ClipboardCheck, Truck, ShieldCheck, PhoneCall } from 'lucide-react';
+import React from 'react';
 
 const ProcessSection = () => {
   const { ref, inView } = useInView({
@@ -38,7 +39,7 @@ const ProcessSection = () => {
     
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 3000);
+    }, 1500);
     
     return () => clearInterval(interval);
   }, [inView, steps.length]);
@@ -46,89 +47,117 @@ const ProcessSection = () => {
   return (
     <section 
       ref={ref}
-      className="py-20 bg-blue-600 text-white"
+      className="py-16 sm:py-20 lg:py-24 bg-blue-600 text-white"
     >
-      <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl font-bold mb-4">How We Work</h2>
-          <div className="w-20 h-1 bg-orange-500 mx-auto mb-4"></div>
-          <p className="text-blue-100">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        <div className="text-center max-w-4xl mx-auto mb-16 sm:mb-20">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">How We Work</h2>
+          <div className="w-24 sm:w-28 h-1 bg-orange-500 mx-auto mb-6"></div>
+          <p className="text-lg sm:text-xl text-blue-100 leading-relaxed">
             Our streamlined process ensures a seamless logistics experience from quote to delivery, with transparency and reliability at every step.
           </p>
         </div>
 
         {/* Desktop Process Timeline */}
-        <div className="hidden md:block relative">
-          {/* Progress Line */}
-          <div className="absolute top-1/2 left-0 right-0 h-1 bg-blue-400/30 -translate-y-1/2">
-            <div 
-              className="h-full bg-orange-500 transition-all duration-700 ease-out"
-              style={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
-            ></div>
+        <div className="hidden lg:block relative max-w-6xl mx-auto">
+          {/* Progress Line Container */}
+          <div className="absolute top-24 left-0 right-0 flex justify-center">
+            <div className="w-5/6 h-1 bg-blue-400/30 relative">
+              <div 
+                className="h-full bg-orange-500 transition-all duration-500 ease-out rounded-full"
+                style={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
+              ></div>
+            </div>
           </div>
 
           {/* Process Steps */}
-          <div className="flex justify-between relative z-10">
+          <div className="grid grid-cols-4 gap-8 relative z-10">
             {steps.map((step, index) => (
               <div 
                 key={index} 
-                className={`w-1/4 px-4 transition-all duration-500 ${
+                className={`flex flex-col items-center transition-all duration-500 ${
                   index <= activeStep 
                     ? 'opacity-100' 
-                    : 'opacity-50'
+                    : 'opacity-60'
                 }`}
               >
-                <div className="flex flex-col items-center">
-                  <div 
-                    className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 transition-all duration-500 ${
-                      index <= activeStep 
-                        ? 'bg-orange-500 text-white transform scale-110' 
-                        : 'bg-blue-400/30 text-blue-100'
-                    }`}
-                  >
-                    {step.icon}
-                  </div>
-                  <h3 className="text-lg font-semibold mb-2 text-center">{step.title}</h3>
-                  <p className="text-sm text-blue-100 text-center">{step.description}</p>
+                <div 
+                  className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-all duration-500 shadow-lg ${
+                    index <= activeStep 
+                      ? 'bg-orange-500 text-white transform scale-110 shadow-orange-500/30' 
+                      : 'bg-blue-400/30 text-blue-100'
+                  }`}
+                >
+                  {React.cloneElement(step.icon, { size: 32 })}
                 </div>
+                <h3 className="text-xl font-bold mb-3 text-center">{step.title}</h3>
+                <p className="text-base text-blue-100 text-center leading-relaxed">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tablet Process Timeline */}
+        <div className="hidden md:block lg:hidden max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 gap-12">
+            {steps.map((step, index) => (
+              <div 
+                key={index}
+                className={`flex flex-col items-center text-center transition-all duration-500 ${
+                  index <= activeStep 
+                    ? 'opacity-100' 
+                    : 'opacity-60'
+                }`}
+              >
+                <div 
+                  className={`w-18 h-18 rounded-full flex items-center justify-center mb-6 transition-all duration-500 shadow-lg ${
+                    index <= activeStep 
+                      ? 'bg-orange-500 text-white transform scale-110 shadow-orange-500/30' 
+                      : 'bg-blue-400/30 text-blue-100'
+                  }`}
+                >
+                  {React.cloneElement(step.icon, { size: 30 })}
+                </div>
+                <h3 className="text-xl font-bold mb-3">{step.title}</h3>
+                <p className="text-base text-blue-100 leading-relaxed">{step.description}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Mobile Process Timeline */}
-        <div className="md:hidden space-y-8">
+        <div className="md:hidden space-y-8 max-w-lg mx-auto">
           {steps.map((step, index) => (
             <div 
               key={index}
               className={`flex items-start transition-all duration-500 ${
                 index <= activeStep 
                   ? 'opacity-100' 
-                  : 'opacity-50'
+                  : 'opacity-60'
               }`}
             >
               <div 
-                className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center mr-4 transition-all duration-500 ${
+                className={`flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center mr-6 transition-all duration-500 shadow-lg ${
                   index <= activeStep 
-                    ? 'bg-orange-500 text-white' 
+                    ? 'bg-orange-500 text-white shadow-orange-500/30' 
                     : 'bg-blue-400/30 text-blue-100'
                 }`}
               >
-                {step.icon}
+                {React.cloneElement(step.icon, { size: 26 })}
               </div>
-              <div>
-                <h3 className="text-lg font-semibold mb-1">{step.title}</h3>
-                <p className="text-sm text-blue-100">{step.description}</p>
+              <div className="flex-1 min-w-0 pt-2">
+                <h3 className="text-lg sm:text-xl font-bold mb-2">{step.title}</h3>
+                <p className="text-base text-blue-100 leading-relaxed">{step.description}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* CTA Button */}
-        <div className="mt-16 text-center">
+        <div className="mt-16 sm:mt-20 text-center">
           <a 
             href="#quote" 
-            className="inline-flex items-center px-6 py-3 bg-white hover:bg-gray-100 text-blue-600 font-medium rounded-md transition-colors"
+            className="inline-flex items-center px-8 py-4 bg-white hover:bg-gray-100 text-blue-600 font-bold rounded-lg transition-all duration-300 text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             Start Your Logistics Journey
           </a>
